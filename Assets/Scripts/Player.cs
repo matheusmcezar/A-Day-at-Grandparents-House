@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     private KeyCode KC_RIGHT;
     private KeyCode KC_UP;
     private KeyCode KC_DOWN;
+    private KeyCode KC_ACTION;
+    private KeyCode KC_INVENTORY;
 
     private BoxCollider2D playerBoxCollider;
 
@@ -16,8 +18,12 @@ public class Player : MonoBehaviour
     public float playerSpeed = 4f;
     public PlayerDirection playerDirection = PlayerDirection.DOWN;
     public bool playerIsWalking = false;
+    public bool lockMovement = false;
+    public bool playerCanInteract = true;
 
-    public PlayerAnimation playerAnimation;
+    public Animator playerAnimator;
+
+    public Inventory inventory;
 
     void Start()
     {
@@ -28,13 +34,19 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
-        HandleDirection();
-        HandleAnimation();
+        if (! this.lockMovement)
+        {
+            HandleMovement();
+            HandleDirection();
+            HandleAnimation();
+            HandleAction();
+        }
     }
 
     private void HandleMovement()
     {
+        if (this.inventory.gameObject.activeInHierarchy) return;
+
         Transform playerTransform = GetComponent<Transform>();
         playerIsWalking = false;
         
@@ -66,6 +78,30 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void HandleAction()
+    {
+        if (Input.GetKeyDown(KC_ACTION) && playerCanInteract)
+        {
+            GameObject target = this.sendRayCast(this.playerDirection, 0.2f);
+
+            if (target != null) {
+                Component component = target.GetComponent("IActionable");
+                IActionable action = component as IActionable;
+                if (action != null)
+                {
+                    action.StartAction();
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KC_INVENTORY))
+        {
+            GameObject inventoryGO = this.inventory.gameObject;
+            playerCanInteract = inventoryGO.activeInHierarchy;
+            inventoryGO.SetActive(!inventoryGO.activeInHierarchy);
+        }
+    }
+
     private void HandleDirection()
     {
         if (playerDirection == PlayerDirection.LEFT) {
@@ -78,29 +114,20 @@ public class Player : MonoBehaviour
     private void HandleAnimation()
     {
         if (playerIsWalking) {
-            switch (playerDirection) {
-                case PlayerDirection.UP:
-                    playerAnimation.PlayAnimation("PlayerWalkUp");
-                    break;
-                case PlayerDirection.DOWN:
-                    playerAnimation.PlayAnimation("PlayerWalkDown");
-                    break;
-                default:
-                    playerAnimation.PlayAnimation("PlayerWalkRight");
-                    break;                    
-            }
+            playerAnimator.SetBool("playerIsWalking", true);
         } else {
-            switch (playerDirection) {
-                case PlayerDirection.UP:
-                    playerAnimation.PlayAnimation("PlayerIdleUp");
-                    break;
-                case PlayerDirection.DOWN:
-                    playerAnimation.PlayAnimation("PlayerIdleDown");
-                    break;
-                default:
-                    playerAnimation.PlayAnimation("PlayerIdleRight");
-                    break;
-            }
+            playerAnimator.SetBool("playerIsWalking", false);
+        }
+        switch (playerDirection) {
+            case PlayerDirection.UP:
+                playerAnimator.SetInteger("playerDirection", 1);
+                break;
+            case PlayerDirection.DOWN:
+                playerAnimator.SetInteger("playerDirection", 2);
+                break;
+            default:
+                playerAnimator.SetInteger("playerDirection", 3);
+                break;                    
         }
     }
 
@@ -110,8 +137,22 @@ public class Player : MonoBehaviour
     }
 
     private bool playerCanMove(PlayerDirection direction) {
+        return this.sendRayCast(direction) == null;
+    }
+
+    private void setKeyCodes()
+    {
+        KC_LEFT = KeyCode.LeftArrow;
+        KC_RIGHT = KeyCode.RightArrow;
+        KC_UP = KeyCode.UpArrow;
+        KC_DOWN = KeyCode.DownArrow;
+        KC_ACTION = KeyCode.Z;
+        KC_INVENTORY = KeyCode.X;
+    }
+
+    private GameObject sendRayCast(PlayerDirection direction, float rayCastDistance = 0.05f)
+    {
         Vector2 rayCastCenter = new Vector2(transform.position.x, transform.position.y + (playerBoxCollider.offset.y * transform.localScale.y));
-        float rayCastDistance = 0.05f;
 
         RaycastHit2D hit = new RaycastHit2D();
 
@@ -119,7 +160,11 @@ public class Player : MonoBehaviour
             hit = Physics2D.BoxCast(rayCastCenter, playerBoxCollider.size * transform.localScale, 0f, transform.right, rayCastDistance, LayerMask.GetMask("Default"));
         }
         if (direction == PlayerDirection.LEFT) {
-            hit = Physics2D.BoxCast(rayCastCenter, playerBoxCollider.size * transform.localScale, 0f, transform.right * -1, rayCastDistance);
+            if (playerDirection == PlayerDirection.LEFT) {
+                hit = Physics2D.BoxCast(rayCastCenter, playerBoxCollider.size * new Vector3(playerLocalScale, playerLocalScale, playerLocalScale), 0f, transform.right * -1, rayCastDistance);
+            } else {
+                hit = Physics2D.BoxCast(rayCastCenter, playerBoxCollider.size * transform.localScale, 0f, transform.right * -1, rayCastDistance);
+            }
         }
         if (direction == PlayerDirection.UP) {
             hit = Physics2D.BoxCast(rayCastCenter, playerBoxCollider.size * transform.localScale, 0f, transform.up, rayCastDistance);
@@ -129,19 +174,8 @@ public class Player : MonoBehaviour
         }
         
         if (hit.collider != null) {
-            Debug.Log(hit.collider.gameObject);
-            Debug.DrawLine(rayCastCenter, hit.collider.gameObject.transform.position);
-            return false;
+            return hit.collider.gameObject;
         }
-
-        return true;
-    }
-
-    private void setKeyCodes()
-    {
-        KC_LEFT = KeyCode.LeftArrow;
-        KC_RIGHT = KeyCode.RightArrow;
-        KC_UP = KeyCode.UpArrow;
-        KC_DOWN = KeyCode.DownArrow;
+        return null;
     }
 }

@@ -1,0 +1,4 @@
+interface IActionable
+{
+    void StartAction();
+}

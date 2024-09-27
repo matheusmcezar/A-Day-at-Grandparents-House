@@ -1,0 +1,4 @@
+Olá!
+Esse é um exemplo de diálogo do NPC de Test.
+Meu nome é Mike, e o seu?
+Até mais!

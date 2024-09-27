@@ -1,0 +1,4 @@
+Olá!
+Esse é um exemplo de diálogo.
+Agora uma mensagem grande: Lalala lelé. Li lo lo e lu. Lalala lelé. Li lo lo e lu. Lalala lelé. Li lo lo e lu. Lalala lelé. Li lo lo e lu. 
+Espero que funcione. Até mais!
