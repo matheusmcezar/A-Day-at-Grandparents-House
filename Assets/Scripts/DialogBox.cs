@@ -21,10 +21,11 @@ public class DialogBox : MonoBehaviour
 
     private string[] textLines;
     private int linesIndex;
+    private AudioManager audioManager;
 
-    void Start()
+    void Awake()
     {
-        //
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     void OnEnable()
@@ -67,6 +68,7 @@ public class DialogBox : MonoBehaviour
 
     void StartDialog()
     {
+        audioManager.PlayDialogSFX(audioManager.dialogWrite);
         linesIndex = 0;
         StartCoroutine(PrintLine());
     }
@@ -75,6 +77,7 @@ public class DialogBox : MonoBehaviour
     {
         StopAllCoroutines();
         textMeshComponent.text = textLines[linesIndex];
+        audioManager.StopDialogSFX();
     }
 
     void NextLine()
@@ -82,8 +85,10 @@ public class DialogBox : MonoBehaviour
         if (linesIndex < textLines.Length - 1) {
             linesIndex++;
             textMeshComponent.text = string.Empty;
+            audioManager.PlayDialogSFX(audioManager.dialogWrite);
             StartCoroutine(PrintLine());
         } else {
+            audioManager.StopDialogSFX();
             gameObject.SetActive(false);
         }
     }
@@ -94,5 +99,6 @@ public class DialogBox : MonoBehaviour
             textMeshComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
+        audioManager.StopDialogSFX();
     }
 }
