@@ -563,6 +563,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: tile-set-gph_21
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 424
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d12aa837444ba0543bc6fa0165a428a9
+      internalID: 409044212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -588,6 +609,7 @@ TextureImporter:
       tile-set-gph_19: 851962829
       tile-set-gph_2: 755148267
       tile-set-gph_20: -1022384352
+      tile-set-gph_21: 409044212
       tile-set-gph_3: 363150087
       tile-set-gph_4: 449896756
       tile-set-gph_5: 816143784
