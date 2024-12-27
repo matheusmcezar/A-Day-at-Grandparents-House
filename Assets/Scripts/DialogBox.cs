@@ -17,7 +17,7 @@ public class DialogBox : MonoBehaviour
     public KeyCode actionKeyCode;
     public string dialogFileName;
     public string whoIsTalking;
-    public string whoIsTalkingImageFileName;
+    public string imagePath;
 
     private string[] textLines;
     private int linesIndex;
@@ -25,7 +25,9 @@ public class DialogBox : MonoBehaviour
 
     void Awake()
     {
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        this.player = playerObject.GetComponent<Player>();
+        this.audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     void OnEnable()
@@ -34,7 +36,7 @@ public class DialogBox : MonoBehaviour
 
         whoIsTalkingComponent.text = whoIsTalking;
 
-        Sprite sprite = Resources.Load<Sprite>(whoIsTalkingImageFileName);
+        Sprite sprite = Resources.Load<Sprite>(imagePath);
         if (sprite != null) {
             whoIsTalkingImageComponent.sprite = sprite;
         }

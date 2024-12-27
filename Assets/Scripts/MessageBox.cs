@@ -7,12 +7,19 @@ using System.IO;
 
 public class MessageBox : MonoBehaviour
 {
-    public Player player;
+    [SerializeField]
+    private Player player;
 
     public TextMeshProUGUI textMeshComponent;
     public KeyCode actionKeyCode;
     public string message;
     
+    private void Awake  ()
+    {
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        this.player = playerObject.GetComponent<Player>();
+    }
+
     void OnEnable()
     {
         player.lockMovement = true;
