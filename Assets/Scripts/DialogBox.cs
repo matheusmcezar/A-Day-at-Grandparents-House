@@ -14,7 +14,6 @@ public class DialogBox : MonoBehaviour
     public Image whoIsTalkingImageComponent;
     
     public float textSpeed;
-    public KeyCode actionKeyCode;
     public string dialogFileName;
     public string whoIsTalking;
     public string imagePath;
@@ -54,7 +53,7 @@ public class DialogBox : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(actionKeyCode)) {
+        if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.ACTION))) {
             if (textMeshComponent.text == textLines[linesIndex]) {
                 NextLine();
             } else {

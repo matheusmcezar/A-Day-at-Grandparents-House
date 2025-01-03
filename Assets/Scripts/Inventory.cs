@@ -16,12 +16,12 @@ public class Inventory : MonoBehaviour
     void Update()
     {
         if (itemList.Count > 0) {
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.LEFT)))
             {
                 this.moveToLeftItem();
                 UpdateUI();
             }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            else if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.RIGHT)))
             {
                 this.moveToRightItem();
                 UpdateUI();

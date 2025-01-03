@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private KeyCode KC_LEFT;
-    private KeyCode KC_RIGHT;
-    private KeyCode KC_UP;
-    private KeyCode KC_DOWN;
-    private KeyCode KC_ACTION;
-    private KeyCode KC_INVENTORY;
-
     private BoxCollider2D playerBoxCollider;
 
     private float playerLocalScale;
@@ -27,7 +20,6 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        setKeyCodes();
         playerBoxCollider = GetComponent<BoxCollider2D>();
         playerLocalScale = transform.localScale.x;
     }
@@ -50,37 +42,47 @@ public class Player : MonoBehaviour
         Transform playerTransform = GetComponent<Transform>();
         playerIsWalking = false;
         
-        if (Input.GetKey(KC_LEFT) && playerCanMove(PlayerDirection.LEFT))
+        if (Input.GetKey(GameManager.instance.keyMap.GetKeyCode(KeyAction.LEFT)))
         {
             playerDirection = PlayerDirection.LEFT;
-            playerIsWalking = true;
-            transform.Translate(Vector3.left * playerSpeed * Time.deltaTime);
+            if (playerCanMove(PlayerDirection.LEFT))
+            {
+                playerIsWalking = true;
+                transform.Translate(Vector3.left * playerSpeed * Time.deltaTime);
+            }
         }
-        if (Input.GetKey(KC_UP) && playerCanMove(PlayerDirection.UP))
+        if (Input.GetKey(GameManager.instance.keyMap.GetKeyCode(KeyAction.UP)))
         {
             playerDirection = PlayerDirection.UP;
-            playerIsWalking = true;
-            transform.Translate(Vector3.up * playerSpeed * Time.deltaTime);
-            
+            if (playerCanMove(PlayerDirection.UP))
+            {
+                playerIsWalking = true;
+                transform.Translate(Vector3.up * playerSpeed * Time.deltaTime);
+            }
         }
-        if (Input.GetKey(KC_RIGHT) && playerCanMove(PlayerDirection.RIGHT))
+        if (Input.GetKey(GameManager.instance.keyMap.GetKeyCode(KeyAction.RIGHT)))
         {
             playerDirection = PlayerDirection.RIGHT;
-            playerIsWalking = true;
-            transform.Translate(Vector3.right * playerSpeed * Time.deltaTime);
+            if (playerCanMove(PlayerDirection.RIGHT))
+            {
+                playerIsWalking = true;
+                transform.Translate(Vector3.right * playerSpeed * Time.deltaTime);
+            }
         }
-        if (Input.GetKey(KC_DOWN) && playerCanMove(PlayerDirection.DOWN))
+        if (Input.GetKey(GameManager.instance.keyMap.GetKeyCode(KeyAction.DOWN)))
         {
             playerDirection = PlayerDirection.DOWN;
-            playerIsWalking = true;
-            transform.Translate(Vector3.down * playerSpeed * Time.deltaTime);
-            
+            if (playerCanMove(PlayerDirection.DOWN))
+            {
+                playerIsWalking = true;
+                transform.Translate(Vector3.down * playerSpeed * Time.deltaTime);
+            }
         }
     }
 
     private void HandleAction()
     {
-        if (Input.GetKeyDown(KC_ACTION) && playerCanInteract)
+        if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.ACTION)) && playerCanInteract)
         {
             GameObject target = this.sendRayCast(this.playerDirection, 0.2f);
 
@@ -94,7 +96,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KC_INVENTORY))
+        if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.MENU)))
         {
             GameObject inventoryGO = this.inventory.gameObject;
             playerCanInteract = inventoryGO.activeInHierarchy;
@@ -138,16 +140,6 @@ public class Player : MonoBehaviour
 
     private bool playerCanMove(PlayerDirection direction) {
         return this.sendRayCast(direction) == null;
-    }
-
-    private void setKeyCodes()
-    {
-        KC_LEFT = KeyCode.LeftArrow;
-        KC_RIGHT = KeyCode.RightArrow;
-        KC_UP = KeyCode.UpArrow;
-        KC_DOWN = KeyCode.DownArrow;
-        KC_ACTION = KeyCode.Z;
-        KC_INVENTORY = KeyCode.X;
     }
 
     private GameObject sendRayCast(PlayerDirection direction, float rayCastDistance = 0.05f)

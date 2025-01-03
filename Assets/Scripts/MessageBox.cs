@@ -11,7 +11,6 @@ public class MessageBox : MonoBehaviour
     private Player player;
 
     public TextMeshProUGUI textMeshComponent;
-    public KeyCode actionKeyCode;
     public string message;
     
     private void Awake  ()
@@ -34,7 +33,7 @@ public class MessageBox : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(actionKeyCode)) {
+        if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.ACTION))) {
             gameObject.SetActive(false);
         }
     }

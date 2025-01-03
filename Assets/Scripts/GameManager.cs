@@ -10,12 +10,14 @@ public class GameManager : MonoBehaviour
     private MessageBox messageBox;
     [SerializeField]
     private DialogBox dialogBox;
+    public KeyMap keyMap;
     
     private void Awake() {
         if (instance == null) {
             instance = this;
             this.messageBox = (MessageBox) FindAnyObjectByType(typeof(MessageBox), FindObjectsInactive.Include);
             this.dialogBox = (DialogBox) FindAnyObjectByType(typeof(DialogBox), FindObjectsInactive.Include);
+            this.startKeyMap();
         } else {
             Destroy(gameObject);
         }
@@ -33,5 +35,16 @@ public class GameManager : MonoBehaviour
         dialogBox.imagePath = dialogBoxPayload.imagePath;
         dialogBox.dialogFileName = dialogBoxPayload.fileName + ".txt";
         dialogBox.gameObject.SetActive(true);
+    }
+
+    private void startKeyMap()
+    {
+        this.keyMap = new KeyMap();
+        this.keyMap.Add(KeyAction.LEFT, KeyCode.A);
+        this.keyMap.Add(KeyAction.UP, KeyCode.W);
+        this.keyMap.Add(KeyAction.RIGHT, KeyCode.D);
+        this.keyMap.Add(KeyAction.DOWN, KeyCode.S);
+        this.keyMap.Add(KeyAction.ACTION, KeyCode.E);
+        this.keyMap.Add(KeyAction.MENU, KeyCode.C);
     }
 }
