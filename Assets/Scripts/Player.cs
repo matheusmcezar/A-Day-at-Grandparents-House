@@ -133,6 +133,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Component component = other.gameObject.GetComponent("IActionable");
+        IActionable action = component as IActionable;
+        if (action != null) {
+            action.StartAction();
+        }
+    }
+
     public enum PlayerDirection
     {
         LEFT, RIGHT, UP, DOWN
