@@ -9,7 +9,7 @@ public class MapExit : MonoBehaviour, IActionable
         GameObject playerObject = GameObject.FindWithTag("Player");
         Player player = playerObject.GetComponent<Player>();
         player.playerAnimator.SetBool("playerIsWalking", false);
-        player.playerDirection = Player.PlayerDirection.UP;
+        player.playerDirection = Vector2.up;
         playerObject.transform.Translate(Vector3.up * player.playerSpeed * 5 * Time.deltaTime);
         GameManager.instance.showMessageBox("Ainda não posso ir embora...");
     }

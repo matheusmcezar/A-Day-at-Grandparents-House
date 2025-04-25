@@ -2330,8 +2330,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This is not a full game, only a small scene created during my Unity studies.
-    Please feel free to make contact through matheuscezarprofissional@gmail.com
+  m_text: This is not a full game, it's only a small scene created during my Unity
+    studies. Please feel free to make contact through matheus.mcezar@gmail.com
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bac27c8a528af7e499a956466bc84cdb, type: 2}
   m_sharedMaterial: {fileID: 4999301914523852442, guid: bac27c8a528af7e499a956466bc84cdb,

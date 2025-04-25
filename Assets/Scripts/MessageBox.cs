@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using TMPro;
 using System.IO;
 
@@ -9,6 +10,7 @@ public class MessageBox : MonoBehaviour
 {
     [SerializeField]
     private Player player;
+    public InputActionReference inputAction;
 
     public TextMeshProUGUI textMeshComponent;
     public string message;
@@ -21,20 +23,20 @@ public class MessageBox : MonoBehaviour
 
     void OnEnable()
     {
+        inputAction.action.started += CloseBox;
         player.lockMovement = true;
         textMeshComponent.text = message;
     }
 
     void OnDisable()
     {
+        inputAction.action.started -= CloseBox;
         textMeshComponent.text = string.Empty;
         player.lockMovement = false;
     }
 
-    void Update()
+    private void CloseBox(InputAction.CallbackContext obj)
     {
-        if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.ACTION))) {
-            gameObject.SetActive(false);
-        }
+        gameObject.SetActive(false);
     }
 }

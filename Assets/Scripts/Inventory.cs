@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class Inventory : MonoBehaviour
@@ -12,20 +13,22 @@ public class Inventory : MonoBehaviour
     public int maxItemAllowed = 10;
     public TextMeshProUGUI itemNameTMP;
     public TextMeshProUGUI itemDescriptionTMP;
+    public InputActionReference inputItemLeft;
+    public InputActionReference inputItemRight;
 
-    void Update()
+    void SelectItemLeft(InputAction.CallbackContext obj)
     {
         if (itemList.Count > 0) {
-            if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.LEFT)))
-            {
-                this.moveToLeftItem();
-                UpdateUI();
-            }
-            else if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.RIGHT)))
-            {
-                this.moveToRightItem();
-                UpdateUI();
-            }
+            this.moveToLeftItem();
+            UpdateUI();
+        }
+    }
+
+    void SelectItemRight(InputAction.CallbackContext obj)
+    {
+        if (itemList.Count > 0) {
+            this.moveToRightItem();
+            UpdateUI();
         }
     }
 
@@ -61,12 +64,16 @@ public class Inventory : MonoBehaviour
     }
     void OnEnable()
     {
+        inputItemLeft.action.started += SelectItemLeft;
+        inputItemRight.action.started += SelectItemRight;
         Time.timeScale = 0;
         UpdateUI();
     }
 
     void OnDisable()
     {
+        inputItemLeft.action.started -= SelectItemLeft;
+        inputItemRight.action.started -= SelectItemRight;
         Time.timeScale = 1;
     }
 

@@ -883,7 +883,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5195813, y: -5.9034977, z: -7}
+  m_LocalPosition: {x: 0.51958036, y: -5.9034967, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6365,6 +6365,7 @@ GameObject:
   - component: {fileID: 837105105}
   - component: {fileID: 837105104}
   - component: {fileID: 837105109}
+  - component: {fileID: 837105110}
   m_Layer: 2
   m_Name: PLAYER
   m_TagString: Player
@@ -6437,12 +6438,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 4
-  playerDirection: 2
   playerIsWalking: 0
   lockMovement: 0
   playerCanInteract: 1
   playerAnimator: {fileID: 837105109}
   inventory: {fileID: 1981086932}
+  playerDirection: {x: 0, y: 0}
+  inputMove: {fileID: -7593093349325346848, guid: 447bf4de61323ae4d88d57af473792ae,
+    type: 3}
+  inputAction: {fileID: 8755458952081096080, guid: 447bf4de61323ae4d88d57af473792ae,
+    type: 3}
+  inputInventory: {fileID: -3238557008058577760, guid: 447bf4de61323ae4d88d57af473792ae,
+    type: 3}
 --- !u!50 &837105106
 Rigidbody2D:
   serializedVersion: 4
@@ -6551,6 +6558,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &837105110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837105103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 447bf4de61323ae4d88d57af473792ae,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Keyboard
+  m_DefaultActionMap: Gameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &875683337
 GameObject:
   m_ObjectHideFlags: 0
@@ -7733,11 +7771,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 678584691652226714, guid: 7e6262ae93684ca499fbcd1b479d0252,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6332171093133147484, guid: 7e6262ae93684ca499fbcd1b479d0252,
         type: 3}
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 7128556386007522306, guid: 7e6262ae93684ca499fbcd1b479d0252,
+        type: 3}
+      propertyPath: inputAction
+      value: 
+      objectReference: {fileID: 8755458952081096080, guid: 447bf4de61323ae4d88d57af473792ae,
+        type: 3}
     - target: {fileID: 8646166043033930395, guid: 7e6262ae93684ca499fbcd1b479d0252,
         type: 3}
       propertyPath: m_RootOrder
@@ -7793,6 +7842,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8911361140261933861, guid: 7e6262ae93684ca499fbcd1b479d0252,
+        type: 3}
+      propertyPath: inputAction
+      value: 
+      objectReference: {fileID: 8755458952081096080, guid: 447bf4de61323ae4d88d57af473792ae,
+        type: 3}
+    - target: {fileID: 9184375731920687613, guid: 7e6262ae93684ca499fbcd1b479d0252,
+        type: 3}
+      propertyPath: inputMove
+      value: 
+      objectReference: {fileID: -7593093349325346848, guid: 447bf4de61323ae4d88d57af473792ae,
+        type: 3}
+    - target: {fileID: 9184375731920687613, guid: 7e6262ae93684ca499fbcd1b479d0252,
+        type: 3}
+      propertyPath: inputItemLeft
+      value: 
+      objectReference: {fileID: 7714508536512822764, guid: 447bf4de61323ae4d88d57af473792ae,
+        type: 3}
+    - target: {fileID: 9184375731920687613, guid: 7e6262ae93684ca499fbcd1b479d0252,
+        type: 3}
+      propertyPath: inputItemRight
+      value: 
+      objectReference: {fileID: 7006804131120295154, guid: 447bf4de61323ae4d88d57af473792ae,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     private BoxCollider2D playerBoxCollider;
 
-    private float playerLocalScale;
+    private SpriteRenderer spriteRenderer;
 
     public float playerSpeed = 4f;
-    public PlayerDirection playerDirection = PlayerDirection.DOWN;
     public bool playerIsWalking = false;
     public bool lockMovement = false;
     public bool playerCanInteract = true;
@@ -18,10 +18,15 @@ public class Player : MonoBehaviour
 
     public Inventory inventory;
 
+    public Vector2 playerDirection;
+    public InputActionReference inputMove;
+    public InputActionReference inputAction;
+    public InputActionReference inputInventory;
+
     void Start()
     {
         playerBoxCollider = GetComponent<BoxCollider2D>();
-        playerLocalScale = transform.localScale.x;
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -29,10 +34,19 @@ public class Player : MonoBehaviour
         if (! this.lockMovement)
         {
             HandleMovement();
-            HandleDirection();
             HandleAnimation();
-            HandleAction();
         }
+    }
+
+    void OnEnable()
+    {
+        inputAction.action.started += DoAct;
+        inputInventory.action.started += OpenInventory;
+    }
+    void OnDisable()
+    {
+        inputAction.action.started -= DoAct;
+        inputInventory.action.started -= OpenInventory;
     }
 
     private void HandleMovement()
@@ -41,48 +55,22 @@ public class Player : MonoBehaviour
 
         Transform playerTransform = GetComponent<Transform>();
         playerIsWalking = false;
+
+        Vector2 tempDirection = inputMove.action.ReadValue<Vector2>();
+
+        if (tempDirection != Vector2.zero) {
+            playerDirection = tempDirection;
         
-        if (Input.GetKey(GameManager.instance.keyMap.GetKeyCode(KeyAction.LEFT)))
-        {
-            playerDirection = PlayerDirection.LEFT;
-            if (playerCanMove(PlayerDirection.LEFT))
-            {
+            if (playerCanMove(playerDirection)) {
                 playerIsWalking = true;
-                transform.Translate(Vector3.left * playerSpeed * Time.deltaTime);
-            }
-        }
-        if (Input.GetKey(GameManager.instance.keyMap.GetKeyCode(KeyAction.UP)))
-        {
-            playerDirection = PlayerDirection.UP;
-            if (playerCanMove(PlayerDirection.UP))
-            {
-                playerIsWalking = true;
-                transform.Translate(Vector3.up * playerSpeed * Time.deltaTime);
-            }
-        }
-        if (Input.GetKey(GameManager.instance.keyMap.GetKeyCode(KeyAction.RIGHT)))
-        {
-            playerDirection = PlayerDirection.RIGHT;
-            if (playerCanMove(PlayerDirection.RIGHT))
-            {
-                playerIsWalking = true;
-                transform.Translate(Vector3.right * playerSpeed * Time.deltaTime);
-            }
-        }
-        if (Input.GetKey(GameManager.instance.keyMap.GetKeyCode(KeyAction.DOWN)))
-        {
-            playerDirection = PlayerDirection.DOWN;
-            if (playerCanMove(PlayerDirection.DOWN))
-            {
-                playerIsWalking = true;
-                transform.Translate(Vector3.down * playerSpeed * Time.deltaTime);
+                transform.Translate(playerDirection * playerSpeed * Time.deltaTime);
             }
         }
     }
 
-    private void HandleAction()
+    private void DoAct(InputAction.CallbackContext obj)
     {
-        if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.ACTION)) && playerCanInteract)
+        if (playerCanInteract)
         {
             GameObject target = this.sendRayCast(this.playerDirection, 0.2f);
 
@@ -95,22 +83,13 @@ public class Player : MonoBehaviour
                 }
             }
         }
-
-        if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.MENU)))
-        {
-            GameObject inventoryGO = this.inventory.gameObject;
-            playerCanInteract = inventoryGO.activeInHierarchy;
-            inventoryGO.SetActive(!inventoryGO.activeInHierarchy);
-        }
     }
 
-    private void HandleDirection()
+    private void OpenInventory(InputAction.CallbackContext obj)
     {
-        if (playerDirection == PlayerDirection.LEFT) {
-            transform.localScale = new Vector3(-playerLocalScale, playerLocalScale, playerLocalScale);
-        } else {
-            transform.localScale = new Vector3(playerLocalScale, playerLocalScale, playerLocalScale);
-        }
+        GameObject inventoryGO = this.inventory.gameObject;
+        playerCanInteract = inventoryGO.activeInHierarchy;
+        inventoryGO.SetActive(!inventoryGO.activeInHierarchy);
     }
 
     private void HandleAnimation()
@@ -120,16 +99,18 @@ public class Player : MonoBehaviour
         } else {
             playerAnimator.SetBool("playerIsWalking", false);
         }
-        switch (playerDirection) {
-            case PlayerDirection.UP:
-                playerAnimator.SetInteger("playerDirection", 1);
-                break;
-            case PlayerDirection.DOWN:
-                playerAnimator.SetInteger("playerDirection", 2);
-                break;
-            default:
-                playerAnimator.SetInteger("playerDirection", 3);
-                break;                    
+        if (playerDirection == Vector2.up) {
+            playerAnimator.SetInteger("playerDirection", 1);
+        } else if (playerDirection == Vector2.down) {
+            playerAnimator.SetInteger("playerDirection", 2);
+        } else if (playerDirection == Vector2.zero) {
+        } else {
+            if (playerDirection.x < 0) {
+                spriteRenderer.flipX = true;
+            } else {
+                spriteRenderer.flipX = false;
+            }
+            playerAnimator.SetInteger("playerDirection", 3);
         }
     }
 
@@ -142,38 +123,16 @@ public class Player : MonoBehaviour
         }
     }
 
-    public enum PlayerDirection
+    private bool playerCanMove(Vector2 direction, float rayCastDistance = 0.05f)
     {
-        LEFT, RIGHT, UP, DOWN
+        return sendRayCast(direction, rayCastDistance) == null;
     }
 
-    private bool playerCanMove(PlayerDirection direction) {
-        return this.sendRayCast(direction) == null;
-    }
-
-    private GameObject sendRayCast(PlayerDirection direction, float rayCastDistance = 0.05f)
+    private GameObject sendRayCast(Vector2 direction, float rayCastDistance)
     {
         Vector2 rayCastCenter = new Vector2(transform.position.x, transform.position.y + (playerBoxCollider.offset.y * transform.localScale.y));
+        RaycastHit2D hit = Physics2D.BoxCast(rayCastCenter, playerBoxCollider.size * transform.localScale, 0f, direction, rayCastDistance, LayerMask.GetMask("Default"));
 
-        RaycastHit2D hit = new RaycastHit2D();
-
-        if (direction == PlayerDirection.RIGHT) {
-            hit = Physics2D.BoxCast(rayCastCenter, playerBoxCollider.size * transform.localScale, 0f, transform.right, rayCastDistance, LayerMask.GetMask("Default"));
-        }
-        if (direction == PlayerDirection.LEFT) {
-            if (playerDirection == PlayerDirection.LEFT) {
-                hit = Physics2D.BoxCast(rayCastCenter, playerBoxCollider.size * new Vector3(playerLocalScale, playerLocalScale, playerLocalScale), 0f, transform.right * -1, rayCastDistance);
-            } else {
-                hit = Physics2D.BoxCast(rayCastCenter, playerBoxCollider.size * transform.localScale, 0f, transform.right * -1, rayCastDistance);
-            }
-        }
-        if (direction == PlayerDirection.UP) {
-            hit = Physics2D.BoxCast(rayCastCenter, playerBoxCollider.size * transform.localScale, 0f, transform.up, rayCastDistance);
-        }
-        if (direction == PlayerDirection.DOWN) {
-            hit = Physics2D.BoxCast(rayCastCenter, playerBoxCollider.size * transform.localScale, 0f, transform.up * -1, rayCastDistance);
-        }
-        
         if (hit.collider != null) {
             return hit.collider.gameObject;
         }

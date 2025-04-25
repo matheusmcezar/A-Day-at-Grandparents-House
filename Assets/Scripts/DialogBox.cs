@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using TMPro;
 using System.IO;
 
 public class DialogBox : MonoBehaviour
 {
     public Player player;
+    public InputActionReference inputAction;
 
     public TextMeshProUGUI textMeshComponent;
     public TextMeshProUGUI whoIsTalkingComponent;
@@ -31,6 +33,7 @@ public class DialogBox : MonoBehaviour
 
     void OnEnable()
     {
+        inputAction.action.started += NextOrClose;
         player.lockMovement = true;
 
         whoIsTalkingComponent.text = whoIsTalking;
@@ -48,17 +51,16 @@ public class DialogBox : MonoBehaviour
 
     void OnDisable()
     {
+        inputAction.action.started -= NextOrClose;
         player.lockMovement = false;
     }
 
-    void Update()
+    private void NextOrClose(InputAction.CallbackContext obj)
     {
-        if (Input.GetKeyDown(GameManager.instance.keyMap.GetKeyCode(KeyAction.ACTION))) {
-            if (textMeshComponent.text == textLines[linesIndex]) {
-                NextLine();
-            } else {
-                FinishLine();
-            }
+        if (textMeshComponent.text == textLines[linesIndex]) {
+            NextLine();
+        } else {
+            FinishLine();
         }
     }
 
