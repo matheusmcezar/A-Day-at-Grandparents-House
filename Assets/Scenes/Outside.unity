@@ -565,8 +565,8 @@ MonoBehaviour:
   dialogSource: {fileID: 1148616487}
   musicSource: {fileID: 927549594}
   background: {fileID: 8300000, guid: 749428170bd956149a4ede7c65dbb8b6, type: 3}
-  dialogWrite: {fileID: 8300000, guid: 0b45a1ef2f72f1d4abd4d92b128138bd, type: 3}
-  music: {fileID: 8300000, guid: c3db6abb073753c4b90e9aeb1d86ba8c, type: 3}
+  dialogWrite: {fileID: 8300000, guid: 7f154d6f0bd405448ac76c238fb42180, type: 3}
+  music: {fileID: 8300000, guid: 105987f6553054c488037dce5a292f8c, type: 3}
 --- !u!4 &397317431
 Transform:
   m_ObjectHideFlags: 0
@@ -6450,6 +6450,8 @@ MonoBehaviour:
     type: 3}
   inputInventory: {fileID: -3238557008058577760, guid: 447bf4de61323ae4d88d57af473792ae,
     type: 3}
+  audioManager: {fileID: 397317430}
+  footstepSound: {fileID: 8300000, guid: bd5653e52c4636e4aa3b0ced8f49a18d, type: 3}
 --- !u!50 &837105106
 Rigidbody2D:
   serializedVersion: 4
@@ -6985,7 +6987,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -7406,8 +7408,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.4
-  m_Pitch: 1
+  m_Volume: 1
+  m_Pitch: 1.5
   Loop: 1
   Mute: 0
   Spatialize: 0
@@ -7664,7 +7666,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 1
   Mute: 0

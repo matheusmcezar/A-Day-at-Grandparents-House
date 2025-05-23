@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject controlsModal;
+	public GameObject controlsModal;
+    public Color loadToColor;
+    public float fadeSpeed = 2f;
 
     public void StartGame()
     {
-        SceneManager.LoadSceneAsync("Outside");
+        Initiate.Fade("Outside", loadToColor, fadeSpeed);
     }
 
     public void ShowControls()

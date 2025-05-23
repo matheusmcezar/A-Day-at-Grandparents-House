@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     public InputActionReference inputMove;
     public InputActionReference inputAction;
     public InputActionReference inputInventory;
+    public AudioManager audioManager;
+    public AudioClip footstepSound;
 
     void Start()
     {
@@ -35,6 +37,7 @@ public class Player : MonoBehaviour
         {
             HandleMovement();
             HandleAnimation();
+            HandleFootstepSound();
         }
     }
 
@@ -137,5 +140,18 @@ public class Player : MonoBehaviour
             return hit.collider.gameObject;
         }
         return null;
+    }
+
+    private void HandleFootstepSound()
+    {
+        if (this.playerIsWalking)
+        {
+            this.audioManager.PlayDialogSFX(this.footstepSound, 1.5f);
+        }
+        else
+        {
+            this.audioManager.StopDialogSFX();
+        }
+        
     }
 }

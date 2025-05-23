@@ -21,13 +21,31 @@ public class AudioManager : MonoBehaviour
 
     public void PlayDialogSFX(AudioClip clip)
     {
-        dialogSource.loop = true;
-        dialogSource.clip = clip;
-        dialogSource.Play();
+        if (!dialogSource.loop)
+        {
+            dialogSource.loop = true;
+            dialogSource.clip = clip;
+            dialogSource.Play();
+        }
+    }
+
+    public void PlayDialogSFX(AudioClip clip, float pitch)
+    {
+        if (!dialogSource.loop)
+        {
+            dialogSource.pitch = pitch;
+            this.PlayDialogSFX(clip);
+        }
     }
 
     public void StopDialogSFX()
     {
         dialogSource.loop = false;
+        this.ResetPitch();
+    }
+
+    public void ResetPitch()
+    {
+        dialogSource.pitch = 1f;
     }
 }
