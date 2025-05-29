@@ -53,6 +53,7 @@ public class DialogBox : MonoBehaviour
     {
         inputAction.action.started -= NextOrClose;
         player.lockMovement = false;
+        player.playerCanInteract = true;
     }
 
     private void NextOrClose(InputAction.CallbackContext obj)

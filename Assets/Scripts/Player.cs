@@ -82,6 +82,7 @@ public class Player : MonoBehaviour
                 IActionable action = component as IActionable;
                 if (action != null)
                 {
+                    playerCanInteract = false;
                     action.StartAction();
                 }
             }
