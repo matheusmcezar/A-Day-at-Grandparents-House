@@ -33,6 +33,7 @@ public class MessageBox : MonoBehaviour
         inputAction.action.started -= CloseBox;
         textMeshComponent.text = string.Empty;
         player.lockMovement = false;
+        player.playerCanInteract = true;
     }
 
     private void CloseBox(InputAction.CallbackContext obj)

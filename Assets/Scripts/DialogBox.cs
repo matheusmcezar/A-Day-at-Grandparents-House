@@ -67,7 +67,8 @@ public class DialogBox : MonoBehaviour
 
     string[] GetTextLines()
     {
-        return File.ReadAllLines(Application.dataPath + "/Texts/" + dialogFileName);
+        TextAsset textAsset = Resources.Load<TextAsset>("Texts/" + dialogFileName);
+        return textAsset.text.Split('\n');
     }
 
     void StartDialog()

@@ -59,7 +59,7 @@ public class Inventory : MonoBehaviour
                 this.setItemHilight(selectedItemIndex, true);
             }
 
-            GameManager.instance.showMessageBox("Você encontrou " + item.name);
+            GameManager.instance.showMessageBox("You found " + item.name);
         }
     }
     void OnEnable()

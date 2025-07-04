@@ -5926,8 +5926,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300070, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
-  name: Cruz
-  description: "Uma decora\xE7\xE3o frequentemente usada em homenagens p\xF3stumas."
+  name: Cross
+  description: A decoration often used in posthumous tributes.
   slot: {fileID: 0}
 --- !u!4 &722685834
 Transform:
@@ -7286,9 +7286,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300090, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
-  name: Vaso
-  description: "Um vaso simples. Pode ser usado para guardar bebida ou plantar uma
-    \xE1rvore."
+  name: Vase
+  description: A simple vase. It can be used to store a drink or to plant a tree.
   slot: {fileID: 0}
 --- !u!1 &1098727779
 GameObject:
@@ -7978,7 +7977,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1490130031
 Transform:
   m_ObjectHideFlags: 0

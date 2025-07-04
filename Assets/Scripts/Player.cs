@@ -33,7 +33,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (! this.lockMovement)
+        if (Input.GetKeyDown(KeyCode.Escape) && playerCanInteract) {
+            Application.Quit();
+        }
+
+        if (!this.lockMovement)
         {
             HandleMovement();
             HandleAnimation();

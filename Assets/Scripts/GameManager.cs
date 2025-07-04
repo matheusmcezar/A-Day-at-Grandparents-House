@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     {
         dialogBox.whoIsTalking = dialogBoxPayload.whoIsTalking;
         dialogBox.imagePath = dialogBoxPayload.imagePath;
-        dialogBox.dialogFileName = dialogBoxPayload.fileName + ".txt";
+        dialogBox.dialogFileName = dialogBoxPayload.fileName;
         dialogBox.gameObject.SetActive(true);
     }
 

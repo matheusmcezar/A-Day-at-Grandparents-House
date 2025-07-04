@@ -12,7 +12,6 @@ public class NPCTest : MonoBehaviour, IActionable
             this.textCont = Random.Range(4, 11);
         }
 
-        Debug.Log(this.textCont);
         DialogBoxPayload payload = new DialogBoxPayload(
             "Grandpa Tutuca",
             "grandpa_tutuca",
